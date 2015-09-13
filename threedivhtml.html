@@ -1,0 +1,50 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="threediv.css" />
+<script language="javascript" type="text/javascript" src="threedivjs.js"> </script>
+</head>
+<body>
+<div id="container" height="100%" width="100%"> 
+
+<div id="header">Header</div>
+</div>
+
+<div id="contentwrapper">
+<!--  Start  of First div -->
+  <div id="first">
+	<div id="labelDiv" align="center" >
+		<label><b>Enter the name of List item:</b></label><br/> 
+	</div>
+<div id="InputAndButtonDiv" align="center" >
+  <input type="text" name="ListItem" style="margin-top:3%" id="listInputValue"/><br/>
+  <button type="addListButton" align='center' style="margin-top:3%" onclick="addItem()">Add List Item</button>
+</div>
+  
+  <div id="ListItemsDiv">
+  
+  <ol id="ListItems">
+  </ol>
+  
+  
+  </div>
+  
+  </div>
+  <!--  End of First div -->
+  
+  <div id="second" align='center'>
+  <input type="text" name="ListItem" style="margin-top:3%" id="listInputValue"/><br/>
+  
+  <label id="clickHandlerSecondDiv"></label><br/> 
+  </div>
+  <div id="third" onmousemove="UpdateFlyingObj(event)">third
+  
+  </div>
+ 
+</div>
+ <label id="MouseDiv" style="position:absolute;"></label><br/> 
+
+ <div id="footer">Footer</div>
+</div>
+</div>
+</body>
+<html>

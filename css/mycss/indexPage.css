@@ -1,0 +1,14 @@
+.inactiveLink {
+   pointer-events: none;
+   cursor: default;
+}
+.loginErrorText{
+padding: 10px;
+color: #FF0000;
+
+}
+
+.loginLabelText{
+visibility: hidden;
+}
+
