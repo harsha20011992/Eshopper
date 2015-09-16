@@ -1,0 +1,57 @@
+CREATE TABLE Products
+(
+Product_Id int NOT NULL AUTO_INCREMENT,
+ProductName varchar(255) NOT NULL,
+ProductDescription varchar(255),
+Category_Id int NOT NULL,
+prize varchar(255),
+size varchar(255),
+color varchar(255),
+UNIQUE (Product_Id),
+FOREIGN KEY (Category_Id) REFERENCES Category(Category_Id)
+);
+
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('Nike','Dress related to Nike',1,'200','38','black');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('jockey','Dress related to jockey',2,'300','40','brown');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('soch','Dress related to soch',3,'400','50','white');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('pogo','Dress related to pogo',4,'100','20','red');
+------------------------------------------------------------------------------------
+
+
+CREATE TABLE Category
+(
+Category_Id int NOT NULL AUTO_INCREMENT,
+CategoryName varchar(255) NOT NULL,
+CategoryDescription varchar(255),
+UNIQUE (Category_Id)
+)
+
+insert into category(CategoryName,CategoryDescription) values('Mens','Dress related to Mens');
+insert into category(CategoryName,CategoryDescription) values('Womens','Dress related to Womens');
+insert into category(CategoryName,CategoryDescription) values('Kids','Dress related to Kids');
+insert into category(CategoryName,CategoryDescription) values('Adults','Dress related to Adults');
+
+--------------------------------------------------------------------------------------------------------
+Add Unique constraint:
+
+ALTER TABLE User_details ADD UNIQUE (Email);
+--------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE SubCategory
+(
+SubCategory_Id int NOT NULL AUTO_INCREMENT,
+SubCategoryName varchar(255) NOT NULL,
+SubCategoryDescription varchar(255),
+Category_Id int NOT NULL,
+FOREIGN KEY (Category_Id) REFERENCES Category(Category_Id),
+CONSTRAINT pk_subcategory PRIMARY KEY (SubCategory_Id,Category_Id)
+);
+
+insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('Footwear','Dress related to Footwear',2);
+insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('Shoes','Dress related to Shoes',1);
+insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('BRA','Dress related to BRA',3);
+insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('Toys','Dress related to Toys',4);
+insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('Panties','Dress related to Panties',3);
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+select category.*,subcategory.subcategoryname from category LEFT JOIN subcategory ON(category.category_id = subcategory.category_id) ORDER BY category_id;
