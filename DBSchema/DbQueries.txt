@@ -15,6 +15,21 @@ insert into products(ProductName,ProductDescription,Category_Id,prize,size,color
 insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('jockey','Dress related to jockey',2,'300','40','brown');
 insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('soch','Dress related to soch',3,'400','50','white');
 insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('pogo','Dress related to pogo',4,'100','20','red');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('pogo1','Dress related to pogo',4,'100','20','red');
+
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('Nike1','Dress related to Nike',1,'1000','22','red');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('Nike2','Dress related to Nike',1,'10200','22','red');
+
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('jockey1','Dress related to jockey',2,'3000','40','brown');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('jockey2','Dress related to jockey',2,'3030','40','brown');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('jockey3','Dress related to jockey',2,'3040','40','brown');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('jockey4','Dress related to jockey',2,'3020','40','brown');
+
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('soch1','Dress related to soch',3,'4400','50','white');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('soch2','Dress related to soch',3,'4500','50','white');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('soch3','Dress related to soch',3,'4600','50','white');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('soch4','Dress related to soch',3,'4700','50','white');
+insert into products(ProductName,ProductDescription,Category_Id,prize,size,color) values('soch5','Dress related to soch',3,'4800','50','white');
 ------------------------------------------------------------------------------------
 
 
@@ -52,6 +67,19 @@ insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) valu
 insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('BRA','Dress related to BRA',3);
 insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('Toys','Dress related to Toys',4);
 insert into SubCategory(SubCategoryName,SubCategoryDescription,Category_Id) values('Panties','Dress related to Panties',3);
+
+update SubCategory set SubCategoryName = "sarees" where SubCategory_Id = 3;
+update SubCategory set SubCategoryName = "pants" where SubCategory_Id = 5;
+
+update SubCategory set SubCategoryDescription = "Dress related to sarees" where SubCategory_Id = 3;
+update SubCategory set SubCategoryDescription = "Dress related to pants" where SubCategory_Id = 5;
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 select category.*,subcategory.subcategoryname from category LEFT JOIN subcategory ON(category.category_id = subcategory.category_id) ORDER BY category_id;
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+select category.CategoryName,products.ProductName,products.prize from category left join products ON(category.category_id = products.category_id) where category.categoryName = 'Kids'
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+select email from User_login where email='harsha@zoho.com' and password='harsha'

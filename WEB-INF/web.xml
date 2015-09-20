@@ -59,4 +59,15 @@
 </servlet-mapping>
   
   
+   <servlet>
+   <servlet-name>ShopPageLoaderServlet</servlet-name>
+   <servlet-class>ShopPageLoaderServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>ShopPageLoaderServlet</servlet-name>
+   <url-pattern>/ShopPageLoaderServlet</url-pattern>
+</servlet-mapping>
+  
+  
 </web-app>

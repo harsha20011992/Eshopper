@@ -17,21 +17,23 @@ function getCookie(cookieKey) {
 		var cookieArray = document.cookie.split(';');
     for(var i=0; i<cookieArray.length; i++) {
         //var singleCookie = cookieArray[i];
-		
-		 localCookieKey = cookieArray[i].split('=')[0];
-		 if(localCookieKey==cookieKey){
+		console.log("cookiename: " + cookieArray[i].split('=')[0] + " cookievalue: " + cookieArray[i].split('=')[1]);
+		 
+		 localCookieKey = cookieArray[i].split('=')[0].trim();
+		 //console.log("cookieKey: " +  cookieKey + " LocalCookieKey: " + localCookieKey + " Locale compare value " + localCookieKey.localeCompare(cookieKey));
+		 if(localCookieKey.localeCompare(cookieKey) == 0){
                   localCookieValue = cookieArray[i].split('=')[1];
-				  console.log("Key is : " + localCookieKey + " and Value is : " + localCookieValue);
+				  console.log("cookie found: Key is : " + localCookieKey + " and Value is : " + localCookieValue);
 				  return localCookieValue;
 				  }
                   
 				  
        
     }
-	console.log("Key is : " + localCookieKey + " and Value is : " + localCookieValue);
+	console.log("Global value: Key is : " + localCookieKey + " and Value is : " + localCookieValue);
     return localCookieValue;
     } else {
-	 console.log("Key is : " + localCookieKey + " and Value is : " + localCookieValue);
+	 console.log("Cookie disabled or not found: Key is : " + localCookieKey + " and Value is : " + localCookieValue);
        return localCookieValue;
 		}
     

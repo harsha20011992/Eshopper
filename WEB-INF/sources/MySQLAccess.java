@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import java.util.logging.*;
+import java.util.*;
 
 public class MySQLAccess {
   private Connection connect = null;
@@ -126,54 +128,117 @@ boolean isValidLogger = MySQLAccessLoggerProperties.setLoggerProperties("MysQLAc
 
   
 
-  public JSONObject SelectQuery(String table_name,String columns_needed,String criteria)
+  public ResultSet SelectQuery(String table_name,String columns_needed,String criteria)
 	{
-	                     String Id=null;
-						 String password = null;
-						 String Email = null;
-						 //String jsonText = null;
-						 String sql=("select " + columns_needed +   " from " + table_name +  " where " + criteria );
+
+						 String sql;
+						 if(criteria==null)
+						 {
+						 sql=("select " + columns_needed +   " from " + table_name);
+						 }
+						 else{
+						 sql=("select " + columns_needed +   " from " + table_name +  " where " + criteria );
+						 }
 						 JSONObject obj=new JSONObject();
 				
                  try
 		{
 			                    
                         
-						//'"+criteria+"';
-						System.out.println(sql);
+						
+						 MySQLAccessLogger.info("Query to be executed: " + sql);
                        
-			Class.forName("com.mysql.jdbc.Driver");
-			connect=DriverManager.getConnection("jdbc:mysql://localhost:3306/Handicrafts","root","root");
+						Class.forName("com.mysql.jdbc.Driver");
+						connect=DriverManager.getConnection("jdbc:mysql://localhost:3306/Handicrafts","root","root");
                         statement=connect.createStatement();
 			
                         resultSet=statement.executeQuery(sql);
-						String user_name = null;
+						MySQLAccessLogger.info("Query executed: " + sql);						
 						if(!resultSet.first()){
-						obj.put("Error","UserNotFound");
-						return obj;
+						MySQLAccessLogger.info("Query executed: " +sql+ " Result is: Empty row");
+						return null;
 						}
 						else
-                        if(resultSet.next())
+						{
+						//resultSetToJSONArrayLeftJoing(resultSet,"email",null);
+						//return (resultSetToJSONArray(resultSet));
+                        return (resultSet);
+						/*while(resultSet.next())
                         {
                          Id=resultSet.getString(1);
 						 password = resultSet.getString(2);
 						 Email = resultSet.getString(3);
-                        }
+                        }*/
+						}
   //obj.put("Id",Id);
   //obj.put("password",password);
-  obj.put("Email",Email);
  //jsonText = obj.toString();                       
 		}
 		catch(Exception ex)
 		{
 			System.out.println(ex);
 			//jsonText = ex.toString() + sql;
-			obj.put("Exception",ex.toString());
-		        
+			MySQLAccessLogger.info("Exception" + ex.toString());
+			return null;		// have to write code to throw exception to the calling class. so empty row and exception are differentiated errorss
 
 		}
-		return obj;
+		
 	}
+  
+  
+  public ResultSet JOINQuery(String sql)
+	{
+
+						 //String sql = "select category.*,subcategory.subcategoryname from category LEFT JOIN subcategory ON(category.category_id = subcategory.category_id) ORDER BY category_id";
+						  //System.out.println("Query to be executed: " + sql);
+						 MySQLAccessLogger.info("Query to be executed: " + sql);
+						 /*if(criteria==null)
+						 {
+						 sql=("select " + columns_needed +   " from " + table_name);
+						 }
+						 else{
+						 sql=("select " + columns_needed +   " from " + table_name +  " where " + criteria );
+						 }
+						 JSONObject obj=new JSONObject();*/
+				
+                 try
+		{
+			                    
+                        
+						
+						  MySQLAccessLogger.info("Query to be executed before connection " + sql);
+                       
+						Class.forName("com.mysql.jdbc.Driver");
+						connect=DriverManager.getConnection("jdbc:mysql://localhost:3306/Handicrafts","root","root");
+                        statement=connect.createStatement();
+			
+                        resultSet=statement.executeQuery(sql);
+						MySQLAccessLogger.info("Query executed after connection: " + resultSet.toString());						
+						if(resultSet==null || !resultSet.first()){
+						MySQLAccessLogger.info("Query executed: " +sql+ " Result is: Empty row");
+						return null;
+						}
+						else
+						{
+						MySQLAccessLogger.info("Test else");
+						//System.out.println(resultSetToJSONArrayLeftJoing(resultSet).toString());
+						return (resultSet);     
+							}
+							}
+		catch(Exception ex)
+		{
+			//System.out.println(ex);
+			//jsonText = ex.toString() + sql;
+			System.out.println("Exception" + ex.toString());
+			return null;		// have to write code to throw exception to the calling class. so empty row and exception are differentiated errorss
+
+		}
+		
+	}
+	
+  
+  
+  
   
   
   private void writeMetaData(ResultSet resultSet) throws SQLException {
@@ -208,6 +273,77 @@ boolean isValidLogger = MySQLAccessLoggerProperties.setLoggerProperties("MysQLAc
     }
   }
 
+  public static JSONArray resultSetToJSONArray(ResultSet resultSet)
+            throws Exception {
+        JSONArray resultJsonArray = new JSONArray();
+		resultSet.beforeFirst();
+		//int row_count = 0;
+        while (resultSet.next()) {
+			//row_count++;
+            int total_columns = resultSet.getMetaData().getColumnCount();
+            JSONObject obj = new JSONObject();
+            for (int i = 0; i < total_columns; i++) {
+                obj.put(resultSet.getMetaData().getColumnLabel(i + 1)
+                        .toLowerCase(), resultSet.getObject(i + 1));
+						}
+						//System.out.println("JSON OBJECT " + obj.toString());
+						resultJsonArray.add(obj);
+                System.out.println("JSONArray from DB is: \n" + resultJsonArray.toString());
+            
+        }
+		
+		
+        return resultJsonArray;
+    }
+	
+ public static JSONObject resultSetToJSONArrayLeftJoing(ResultSet resultSet,String ResultJSONObjectKey,String ResultJSONObjectArrayList)
+            throws Exception {
+        
+		resultSet.beforeFirst();
+		//int row_count = 0;
+		      MySQLAccessLogger.info("Inside resultSetToJSONArrayLeftJoing method");
+			  JSONObject TempJSONObj = new JSONObject();
+			  //TempJSONObj.put("category_id","");
+        while (resultSet.next()) {
+			//row_count++;
+			//JSONArray resultJsonArray = new JSONArray();
+            int total_columns = resultSet.getMetaData().getColumnCount();
+            MySQLAccessLogger.info("Iterating resultset");
+						
+			if(TempJSONObj.get(resultSet.getString(ResultJSONObjectKey)) != null){
+			
+				//System.out.println("*****************************************" +((ArrayList)((JSONObject)((JSONArray)TempJSONObj.get(resultSet.getString(ResultJSONObjectKey))).get(0)).get("subcategoryname")).toString());
+				
+				((ArrayList)((JSONObject)(TempJSONObj.get(resultSet.getObject(ResultJSONObjectKey)))).get(ResultJSONObjectArrayList)).add(resultSet.getObject(ResultJSONObjectArrayList));
+			}
+			else{
+			JSONObject ResultJSONArrayJSONObj = new JSONObject();
+            for (int i = 0; i < total_columns; i++) {
+			MySQLAccessLogger.info("CategoryName VALUE: " + !(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase().equals(ResultJSONObjectKey)));
+			if(ResultJSONObjectArrayList != null && (resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase()).equals(ResultJSONObjectArrayList)){
+			ArrayList ResultArrayList = new ArrayList();
+			ResultArrayList.add(resultSet.getObject(i + 1));
+			ResultJSONArrayJSONObj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), ResultArrayList);
+			}
+			else if(!(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase().equals(ResultJSONObjectKey))){
+			ResultJSONArrayJSONObj.put(resultSet.getMetaData().getColumnLabel(i + 1)
+                        .toLowerCase(), resultSet.getObject(i + 1));
+						
+			}					
+						}
+						//resultJsonArray.add(ResultJSONArrayJSONObj);	
+						TempJSONObj.put(resultSet.getObject(ResultJSONObjectKey),ResultJSONArrayJSONObj);
+						}
+						//System.out.println("JSON OBJECT " + obj.toString());
+						
+						
+            
+        }
+		
+		MySQLAccessLogger.info("JSONArray from DB is: \n" + TempJSONObj.toString());
+        return TempJSONObj;
+    }
+	
   // You need to close the resultSet
   private void close() {
     try {

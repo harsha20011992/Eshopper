@@ -11,7 +11,7 @@ function actionLogin(){
 		if (AJAXRequestObject.status==200 && AJAXRequestObject.readyState == 4 ){
 			var userNameFromServer = AJAXRequestObject.responseText.trim();
 			console.log("userNameFromServer returned is:" + userNameFromServer);
-			if(userNameFromServer != "UserNotFound"){
+			if(userNameFromServer != "USER_NOT_REGISTERED"){
 				setCookie("username",userNameFromServer,1);
 				window.location="index.html";
 				}
@@ -46,8 +46,9 @@ console.log("Inside actionSignUp()");
 		//alert(AJAXRequestObject.responseText);	
 			var userNameFromServer = AJAXRequestObject.responseText.trim();
 			console.log("userNameFromServer returned is:" + userNameFromServer);
+			alert(userNameFromServer);
 			if(userNameFromServer != "EmailAlreadyExists"){ //Need to write server logic in future to send this error code (EmailAlreadyExists)
-				setCookie("username",userNameFromServer,1);
+				setCookie("username",userNameFromServer,2);
 				window.location="index.html";
 				}
 				else{
