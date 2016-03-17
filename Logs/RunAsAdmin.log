@@ -1,0 +1,4 @@
+17-03-16 16:28:53 Execute: path-> notepad++
+17-03-16 16:28:53 Execute: argument-> test.txt
+17-03-16 16:28:53 isVistaAndAbove : TRUE
+17-03-16 16:28:53 Execute: ShellExecute is Succeded!
